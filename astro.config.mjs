@@ -1,8 +1,10 @@
 import { defineConfig } from 'astro/config';
+import vercel from '@astrojs/vercel/serverless';
 
 export default defineConfig({
   site: 'https://bidwise.website',
-  output: 'static',
+  output: 'hybrid',
+  adapter: vercel(),
   trailingSlash: 'ignore',
   integrations: [],
   vite: {
