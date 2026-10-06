@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://bidwise.co',
+  site: 'https://bidwise.website',
   output: 'static',
   trailingSlash: 'ignore',
   integrations: [],
@@ -10,6 +10,6 @@ export default defineConfig({
     optimizeDeps: { exclude: ['openpyxl'] }
   },
   image: {
-    domains: ['bidwise.co'],
+    domains: ['bidwise.website'],
   }
 });
