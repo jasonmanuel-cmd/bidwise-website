@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="BIDWISE — Price Like A Pro" description="Free contractor quote calculator. See your required price, gross profit, and margin instantly.">
+  <main style="max-width:980px;margin:0 auto;padding:48px 24px;color:#F3F4F6;font-family:Inter,sans-serif;line-height:1.5">
+    <header style="text-align:center;margin-bottom:48px">
+      <h1 style="font-size:clamp(2.2rem,5vw,3.4rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;margin-bottom:8px">BIDWISE <span style="color:#FBBF24">CleanQuote</span></h1>
+      <p style="color:#A1A1AA;font-size:1.1rem;max-width:560px;margin:0 auto">Free contractor quote calculator. See your required price, gross profit, and margin instantly — no signup required.</p>
+      <div style="display:inline-flex;align-items:center;gap:8px;background:#27272A;border:1px solid #3F3F46;border-radius:999px;padding:6px 14px;font-size:.8rem;color:#A1A1AA;margin-top:16px">★ Price Like A Pro · $0 Upfront · Zero-Touch Fulfillment · Operator: JAX</div>
+    </header>
+
+    <section style="background:#18181B;border:1px solid #27272A;border-radius:20px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,.35);margin-bottom:32px">
+      <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:8px">Interactive Calculator</h2>
+      <p style="color:#A1A1AA;font-size:.95rem;margin-bottom:20px">Enter your job costs. The BIDWISE engine applies the exact pricing formula.</p>
+      <form id="calcForm" style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))" onsubmit="event.preventDefault(); calculate();">
+        <div><label style="display:block;font-size:.75rem;font-weight:600;color:#A1A1AA;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Materials Cost ($)</label><input id="materials" type="number" step="1" min="0" value="450" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #3F3F46;background:#27272A;color:#F3F4F6;font-family:inherit;font-size:.95rem;outline:none" /></div>
+        <div><label style="display:block;font-size:.75rem;font-weight:600;color:#A1A1AA;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Labor Hours</label><input id="laborHours" type="number" step="0.5" min="0" value="10" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #3F3F46;background:#27272A;color:#F3F4F6;font-family:inherit;font-size:.95rem;outline:none" /></div>
+        <div><label style="display:block;font-size:.75rem;font-weight:600;color:#A1A1AA;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Hourly Rate ($)</label><input id="hourlyRate" type="number" step="1" min="0" value="65" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #3F3F46;background:#27272A;color:#F3F4F6;font-family:inherit;font-size:.95rem;outline:none" /></div>
+        <div><label style="display:block;font-size:.75rem;font-weight:600;color:#A1A1AA;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Labor Burden %</label><input id="burden" type="number" step="0.01" min="0" max="1" value="0.15" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #3F3F46;background:#27272A;color:#F3F4F6;font-family:inherit;font-size:.95rem;outline:none" /></div>
+        <div><label style="display:block;font-size:.75rem;font-weight:600;color:#A1A1AA;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Travel / Disposal ($)</label><input id="travel" type="number" step="1" min="0" value="75" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #3F3F46;background:#27272A;color:#F3F4F6;font-family:inherit;font-size:.95rem;outline:none" /></div>
+        <div><label style="display:block;font-size:.75rem;font-weight:600;color:#A1A1AA;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Fixed Overhead ($)</label><input id="overhead" type="number" step="1" min="0" value="37" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #3F3F46;background:#27272A;color:#F3F4F6;font-family:inherit;font-size:.95rem;outline:none" /></div>
+        <div><label style="display:block;font-size:.75rem;font-weight:600;color:#A1A1AA;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Target Margin %</label><select id="margin" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #3F3F46;background:#27272A;color:#F3F4F6;font-family:inherit;font-size:.95rem;outline:none"><option value="0.25">25%</option><option value="0.30" selected>30%</option><option value="0.35">35%</option><option value="0.40">40%</option></select></div>
+        <div><label style="display:block;font-size:.75rem;font-weight:600;color:#A1A1AA;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Discount %</label><input id="discount" type="number" step="0.01" min="0" max="1" value="0" style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #3F3F46;background:#27272A;color:#F3F4F6;font-family:inherit;font-size:.95rem;outline:none" /></div>
+      </form>
+      <button onclick="calculate()" style="margin-top:16px;padding:12px 24px;border-radius:10px;border:none;background:linear-gradient(135deg,#FBBF24,#B45309);color:#0B1117;font-weight:800;font-size:1rem;cursor:pointer">Calculate Price &amp; Margin →</button>
+
+      <div id="results" style="margin-top:24px;border-top:1px solid #27272A;padding-top:24px;display:none">
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #27272A"><span style="color:#A1A1AA">Modelled Cost</span><span id="rCost" style="font-family:'JetBrains Mono',monospace;font-weight:700">$0.00</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #27272A"><span style="color:#A1A1AA">Required Price</span><span id="rPrice" style="font-family:'JetBrains Mono',monospace;font-weight:700">$0.00</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #27272A"><span style="color:#A1A1AA">Gross Profit</span><span id="rProfit" style="font-family:'JetBrains Mono',monospace;font-weight:700">$0.00</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #27272A"><span style="color:#A1A1AA">Markup</span><span id="rMarkup" style="font-family:'JetBrains Mono',monospace;font-weight:700">0%</span></div>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #27272A;font-weight:700;color:#FBBF24"><span>Actual Margin</span><span id="rActual" style="font-family:'JetBrains Mono',monospace">0%</span></div>
+        <div id="warnBox"></div>
+      </div>
+    </section>
+
+    <section style="background:#18181B;border:1px solid #27272A;border-radius:20px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,.35)">
+      <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:8px">Unlock the Full System ($29)</h2>
+      <p style="color:#A1A1AA;font-size:.95rem;margin-bottom:20px">Calculator is free. The value is the complete workbook you deliver to customers.</p>
+      <ul style="color:#A1A1AA;font-size:.95rem;line-height:1.7;list-style:none;padding-left:0">
+        <li>✓ Macro-free .xlsx — import to Google Sheets</li>
+        <li>✓ 8 tabs: Start Here / Settings / Job Inputs / Cost Detail / Profit Check / Customer Quote / Change Orders / Worked Example</li>
+        <li>✓ Customer-facing quote hides internal costs</li>
+        <li>✓ Formula validated: Price = Cost / (1 − Margin)</li>
+        <li>✓ Tested edge cases (0 cost, 100% invalid, decimals, tax, discounts)</li>
+      </ul>
+      <div style="margin-top:24px;text-align:center">
+        <a href="#" onclick="alert('Stripe Checkout opens here. Connect Stripe Checkout + $29 product in production.');return false;" style="display:inline-block;padding:16px 32px;border-radius:14px;background:#FBBF24;color:#0B1117;font-weight:800;font-size:1.1rem;text-decoration:none">Buy Workbook — $29 → Download ZIP</a>
+        <p style="margin-top:12px;color:#A1A1AA;font-size:.85rem">Instant delivery via Resend. Google Drive copy link included.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer style="margin-top:64px;text-align:center;color:#A1A1AA;font-size:.85rem">
+    Built by <strong>BIDWISE / Chaotically Organized AI</strong> · Operator <strong>JAX</strong> · <a href="#" style="color:#FBBF24">Source</a> · <a href="#" style="color:#FBBF24">Master Build Prompt</a>
+  </footer>
+
+  <script>
+    function calcCost() {
+      const mats = parseFloat(document.getElementById('materials').value) || 0;
+      const hrs = parseFloat(document.getElementById('laborHours').value) || 0;
+      const rate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+      const burden = parseFloat(document.getElementById('burden').value) || 0;
+      const travel = parseFloat(document.getElementById('travel').value) || 0;
+      const overhead = parseFloat(document.getElementById('overhead').value) || 0;
+      const labor = hrs * rate * (1 + burden);
+      const materials = mats * 1.10;
+      return labor + materials + travel + overhead;
+    }
+    function calculate() {
+      const cost = calcCost();
+      const margin = parseFloat(document.getElementById('margin').value) || 0.3;
+      const discount = parseFloat(document.getElementById('discount').value) || 0;
+      if (margin >= 1 || margin < 0) { document.getElementById('warnBox').innerHTML = '<div style="background:rgba(248,113,113,.12);border-left:4px solid #F87171;border-radius:8px;padding:12px 16px;color:#fecaca;font-size:.9rem;margin-top:12px">Invalid margin (must be 0 ≤ M &lt; 1.0). Check Settings.</div>'; return; }
+      if (cost === 0) document.getElementById('warnBox').innerHTML = '<div style="background:rgba(248,113,113,.12);border-left:4px solid #F87171;border-radius:8px;padding:12px 16px;color:#fecaca;font-size:.9rem;margin-top:12px">Zero cost — price equals $0.</div>';
+      else document.getElementById('warnBox').innerHTML = '';
+      const priceTarget = cost / (1 - margin);
+      const profitTarget = priceTarget - cost;
+      const markup = cost > 0 ? profitTarget / cost : 0;
+      const discounted = priceTarget * (1 - discount);
+      const actualMargin = discounted > 0 ? (discounted - cost) / discounted : 0;
+      document.getElementById('results').style.display = 'block';
+      document.getElementById('rCost').textContent = '$' + cost.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+      document.getElementById('rPrice').textContent = '$' + priceTarget.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+      document.getElementById('rProfit').textContent = '$' + profitTarget.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+      document.getElementById('rMarkup').textContent = (markup*100).toFixed(2) + '%';
+      document.getElementById('rActual').textContent = (actualMargin*100).toFixed(2) + '%';
+    }
+  </script>
+</Layout>
