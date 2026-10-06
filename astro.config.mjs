@@ -6,8 +6,7 @@ export default defineConfig({
   trailingSlash: 'ignore',
   integrations: [],
   vite: {
-    build: { target: 'esnext' },
-    optimizeDeps: { exclude: ['openpyxl'] }
+    build: { target: 'esnext' }
   },
   image: {
     domains: ['bidwise.website'],
